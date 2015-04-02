@@ -1,0 +1,48 @@
+public ActionResult Index(string caseProduct, string caseType, string caseCategory)
+        {
+var CategoryList = new List<string>();
+            var CategoryQry = from a in db.Cases
+                              orderby a.Category
+                              select a.Category;
+
+            CategoryList.AddRange(CategoryQry.Distinct());
+            ViewBag.caseCategory = new SelectList(CategoryList);
+
+
+            var TypeList = new List<string>();
+
+            var TypeQry = from t in db.Cases
+                          orderby t.CaseType
+                          select t.CaseType;
+
+            TypeList.AddRange(TypeQry.Distinct());
+            ViewBag.caseType = new SelectList(TypeList);
+
+            var ProductList = new List<string>();
+
+            var ProductQry = from d in db.Cases
+                             orderby d.Product
+                             select d.Product;
+
+            ProductList.AddRange(ProductQry.Distinct());
+            ViewBag.caseProduct = new SelectList(ProductList);
+            
+                if (!string.IsNullOrEmpty(caseProduct))
+            {
+                cases = cases.Where(x => x.Product == caseProduct);
+            }
+
+            if (!string.IsNullOrEmpty(caseType))
+            {
+                cases = cases.Where(y => y.CaseType == caseType);
+            }
+
+            if (!string.IsNullOrEmpty(caseCategory))
+            {
+                cases = cases.Where(b => b.Category == caseCategory);
+            }
+
+
+
+            return View(cases);
+        }
